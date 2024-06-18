@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Filter Search</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        body {
+            background-color: #f4f4f4;
+        }
+        
+        .wrapper {
+            position: relative;
+            margin: 5px auto;
+            flex-direction: column;
+            max-width: 400px;
+            min-height: 600px;
+            font-size: 12px;
+            border: 1px solid #ccc;
+        }
+        
+        .row {
+            margin: 0 auto;
+            width: 90%;
+        }
+        
+        .section_top {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: column;
+            min-height: 150px;
+            background-color: #fff;
+        }
+        
+        .sub-title {
+            margin: 15px auto;
+        }
+        
+        .section_top .btn-search {
+            width: 100%;
+            height: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .section_top .btn-search input[type="text"] {
+            width: 100%;
+            height: 100%;
+            font-size: 16px;
+            padding: 0 20px;
+            outline: none;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            background-color: #f4f4f4;
+        }
+        
+        .section_top .btn-search input[type="text"]:hover {
+            outline: 1px solid #ffd23f;
+            border: none;
+        }
+        
+        .section_body {
+            height: 350px;
+            padding: 10px 0px;
+            width: 100%;
+            overflow-y: scroll;
+            background-color: #f4f4f4;
+        }
+        
+        .locationRadioButton {
+            position: relative;
+            margin: 10px auto;
+            height: 45px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .locationRadioButton input[type="radio"] {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .locationRadioButton label {
+            margin-left: 18px;
+            font-size: 13px;
+        }
+        
+        .section_footer {
+            width: 100%;
+            min-height: 100px;
+            background-color: #fff;
+        }
+        
+        .section_footer .btn-submit {
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn-submit button {
+            width: 100%;
+            border: none;
+            background-color: #0f62fe;
+            font-size: 32px;
+        }
+        
+        .btn-submit button span {
+            font-size: 32px;
+        }
+        
+        .btn-submit button:hover {
+            background-color: #007d79;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <form>
+            <div class="section_top">
+                <div class="sub-title row">
+                    <h3>ស្វាគមន៍ </h3>
+                    <span>ជ្រើសរើសទីតាំងរបស់អ្នកពីបញ្ជីខាងក្រោម។ ប្រើប្រអប់ស្វែងរកដើម្បីរកទីតាំងរបស់អ្នក។</span>
+                </div>
+                <div class="btn-search">
+                    <input type="text" placeholder="ស្វែងរកទីតាំង" class="searchLocationBranch">
+                </div>
+            </div>
+            <div class="section_body" id="dataListLocationBranch">
+                <div class="locationRadioButton row">
+                    <input type="radio" name="location" id="10112. ចំណោម_HC" class="radio_btn">
+                    <label for="10112. ចំណោម_HC" class="radio_btn_label">10112. ចំណោម_HC</label>
+                </div>
+                <div class="locationRadioButton row">
+                    <input type="radio" name="location" id="100102. ចំបក់_HC" class="radio_btn">
+                    <label for="100102. ចំបក់_HC" class="radio_btn_label">100102. ចំបក់_HC</label>
+                </div>
+                <div class="locationRadioButton row">
+                    <input type="radio" name="location" id="100105. ខ្សាច់អណ្តែត_HC" class="radio_btn">
+                    <label for="100105. ខ្សាច់អណ្តែត_HC" class="radio_btn_label">100105. ខ្សាច់អណ្តែត_HC</label>
+                </div>
+                <div class="locationRadioButton row">
+                    <input type="radio" name="location" id="100106. ពង្រ_HC" class="radio_btn">
+                    <label for="100106. ពង្រ_HC" class="radio_btn_label">100106. ពង្រ_HC</label>
+                </div>
+                <div class="locationRadioButton row">
+                    <input type="radio" name="location" id="100108. កញ្ជរ_HC" class="radio_btn">
+                    <label for="100108. កញ្ជរ_HC" class="radio_btn_label">100108. កញ្ជរ_HC100108. កញ្ជរ_HC</label>
+                </div>
+            </div>
+            <div class="section_footer">
+                <div class="btn-submit row">
+                    <button type="submit">
+                        <span>បញ្ជូន</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var checkedRadioButton = $('#dataListLocationBranch .radio_btn:checked').closest('.locationRadioButton');
+            if (checkedRadioButton.length) {
+                checkedRadioButton.prependTo('#dataListLocationBranch');
+            }
+
+            // Event handlerfor the search input field
+            $('.searchLocationBranch').on('input', function(event) {
+                // Get the search text from the input field
+                var searchText = $(this).val().toLowerCase();
+                // Iterate over each location radio button
+                console.log(searchText);
+                $('#dataListLocationBranch .locationRadioButton').each(function() {
+                    // Get the text of the radio button
+                    var text = $(this).text().toLowerCase();
+                    // Check if the text includes the search text
+                    if (text.includes(searchText)) {
+                        // Show the radio button if it matches the search text
+                        $(this).show();
+                        console.log(text);
+                    } else {
+                        // Hide the radio button if it doesn't match the search text
+                        $(this).hide();
+                    }
+                });
+            });
+
+            $('.searchLocationBranch').on('keydown', function(event) {
+                if (event.keyCode === 8 && $(this).val().length === 1) {
+                    $('#dataListLocationBranch .locationRadioButton').show();
+                }
+            });
+
+            $('#dataListLocationBranch').on('change', '.radio_btn', function() {
+                moveCheckedToTop();
+            });
+
+            moveCheckedToTop();
+        });
+
+        function moveCheckedToTop() {
+            var checkedRadioButton = $('#dataListLocationBranch .radio_btn:checked').closest('.locationRadioButton');
+            if (checkedRadioButton.length) {
+                checkedRadioButton.prependTo('#dataListLocationBranch');
+            }
+        }
+    </script>
+</body>
+
+</html>
