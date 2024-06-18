@@ -175,11 +175,6 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function() {
-            var checkedRadioButton = $('#dataListLocationBranch .radio_btn:checked').closest('.locationRadioButton');
-            if (checkedRadioButton.length) {
-                checkedRadioButton.prependTo('#dataListLocationBranch');
-            }
-
             // Event handlerfor the search input field
             $('.searchLocationBranch').on('input', function(event) {
                 // Get the search text from the input field
@@ -193,7 +188,7 @@
                     if (text.includes(searchText)) {
                         // Show the radio button if it matches the search text
                         $(this).show();
-                        console.log(text);
+                        moveCheckedToTop();
                     } else {
                         // Hide the radio button if it doesn't match the search text
                         $(this).hide();
@@ -207,9 +202,9 @@
                 }
             });
 
-            $('#dataListLocationBranch').on('change', '.radio_btn', function() {
-                moveCheckedToTop();
-            });
+            // $('#dataListLocationBranch').on('change', '.radio_btn', function() {
+            //     moveCheckedToTop();
+            // });
 
             moveCheckedToTop();
         });
